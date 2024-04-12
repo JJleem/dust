@@ -1,0 +1,145 @@
+@import "./reset.css";
+body h1 {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+body h1 span {
+  color: goldenrod;
+}
+body .img_wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  height: 50vh;
+}
+body .img_wrapper .map {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1024px;
+  height: 100%;
+  padding: 20px;
+}
+body .img_wrapper .city {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  font-weight: thin;
+  background: black;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 10px;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-wrap: bold;
+  cursor: pointer;
+}
+body .img_wrapper .jung-gu {
+  top: 45%;
+  left: 53%;
+}
+body .img_wrapper .jongno-gu {
+  top: 34%;
+  left: 47%;
+}
+body .img_wrapper .yongsan-gu {
+  top: 54%;
+  left: 46%;
+}
+body .img_wrapper .Eunpyeong-gu {
+  top: 24%;
+  left: 37%;
+}
+body .img_wrapper .seodaemun-gu {
+  top: 38%;
+  left: 38%;
+}
+body .img_wrapper .mapo-gu {
+  top: 48%;
+  left: 33%;
+}
+body .img_wrapper .gwangjin-gu {
+  top: 52%;
+  left: 74%;
+}
+body .img_wrapper .seongdong-gu {
+  top: 50%;
+  left: 63%;
+}
+body .img_wrapper .jungnang-gu {
+  top: 35%;
+  left: 75%;
+}
+body .img_wrapper .dongdaemun-gu {
+  top: 40%;
+  left: 67%;
+}
+body .img_wrapper .seongbuk-gu {
+  top: 35%;
+  left: 58%;
+}
+body .img_wrapper .dobong-gu {
+  top: 13%;
+  left: 62%;
+}
+body .img_wrapper .gangbuk-gu {
+  top: 21%;
+  left: 56%;
+}
+body .img_wrapper .nowon-gu {
+  top: 18%;
+  left: 70%;
+}
+body .img_wrapper .gangseo-gu {
+  top: 45%;
+  left: 13%;
+}
+body .img_wrapper .guro-gu {
+  top: 68%;
+  left: 18%;
+}
+body .img_wrapper .yeongdeungpo-gu {
+  top: 61%;
+  left: 32%;
+}
+body .img_wrapper .dongjak-gu {
+  top: 65%;
+  left: 43%;
+}
+body .img_wrapper .gwanak-gu {
+  top: 76%;
+  left: 42%;
+}
+body .img_wrapper .geumcheon-gu {
+  top: 75%;
+  left: 31%;
+}
+body .img_wrapper .yangcheon-gu {
+  top: 56%;
+  left: 20%;
+}
+body .img_wrapper .gangnam-gu {
+  top: 70%;
+  left: 68%;
+}
+body .img_wrapper .seocho-gu {
+  top: 73%;
+  left: 56%;
+}
+body .img_wrapper .songpa-gu {
+  top: 66%;
+  left: 80%;
+}
+body .img_wrapper .gangdong-gu {
+  top: 50%;
+  left: 87%;
+}/*# sourceMappingURL=style.css.map */
