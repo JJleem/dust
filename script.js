@@ -3,6 +3,6 @@ const getDust = () => {
     "http://openAPI.seoul.go.kr:8088/6b57516b6e6a616531303061426d5571/json/RealtimeCityAir/1/100/";
   fetch(url)
     .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then((data) => console.log(...[data.RealtimeCityAir.row[0]]));
 };
 getDust();
