@@ -10,147 +10,301 @@ const IDEX_NM = document.querySelector(".IDEX_NM");
 const MSRDT = document.querySelector(".MSRDT");
 const modalh1 = document.querySelector(".modal_text h1");
 
-const getDust = () => {
-  const url =
-    "http://openAPI.seoul.go.kr:8088/6b57516b6e6a616531303061426d5571/json/RealtimeCityAir/1/100/";
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      dustdatas = data.RealtimeCityAir.row;
+var xhr = new XMLHttpRequest();
+var url =
+  "http://openAPI.seoul.go.kr:8088/6b57516b6e6a616531303061426d5571/json/RealtimeCityAir/1/100/"; /* URL */
+xhr.open("GET", url);
 
-      //
-      let PM10Sum = 0;
-      dustdatas
-        .map((data) => data.PM10)
-        .forEach((num) => {
-          PM10Sum += num;
-        });
-      PM10.innerText = (PM10Sum / 25).toFixed(2);
-      //
-      let PM25Sum = 0;
-      dustdatas
-        .map((data) => data.PM25)
-        .forEach((num) => {
-          PM25Sum += num;
-        });
-      PM25.innerText = (PM25Sum / 25).toFixed(2);
-      //
-      let O3Sum = 0;
-      dustdatas
-        .map((data) => data.O3)
-        .forEach((num) => {
-          O3Sum += num;
-        });
-      O3.innerText = (O3Sum / 25).toFixed(4);
-      //
-      let SO2Sum = 0;
-      dustdatas
-        .map((data) => data.SO2)
-        .forEach((num) => {
-          SO2Sum += num;
-        });
-      SO2.innerText = (SO2Sum / 25).toFixed(4);
-      //
-      let COSum = 0;
-      dustdatas
-        .map((data) => data.CO)
-        .forEach((num) => {
-          COSum += num;
-        });
-      CO.innerText = (COSum / 25).toFixed(4);
-      //
-      let NO2Sum = 0;
-      dustdatas
-        .map((data) => data.NO2)
-        .forEach((num) => {
-          NO2Sum += num;
-        });
-      NO2.innerText = (NO2Sum / 25).toFixed(4);
-      //
+xhr.onreadystatechange = function () {
+  if (this.readyState == xhr.DONE) {
+    // <== 정상적으로 준비되었을때
+    if (xhr.status == 200 || xhr.status == 201) {
+      // <== 호출 상태가 정상적일때
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          dustdatas = data.RealtimeCityAir.row;
 
-      // 등급에따른 색 및 사진 변화
+          //
+          let PM10Sum = 0;
+          dustdatas
+            .map((data) => data.PM10)
+            .forEach((num) => {
+              PM10Sum += num;
+            });
+          PM10.innerText = (PM10Sum / 25).toFixed(2);
+          //
+          let PM25Sum = 0;
+          dustdatas
+            .map((data) => data.PM25)
+            .forEach((num) => {
+              PM25Sum += num;
+            });
+          PM25.innerText = (PM25Sum / 25).toFixed(2);
+          //
+          let O3Sum = 0;
+          dustdatas
+            .map((data) => data.O3)
+            .forEach((num) => {
+              O3Sum += num;
+            });
+          O3.innerText = (O3Sum / 25).toFixed(4);
+          //
+          let SO2Sum = 0;
+          dustdatas
+            .map((data) => data.SO2)
+            .forEach((num) => {
+              SO2Sum += num;
+            });
+          SO2.innerText = (SO2Sum / 25).toFixed(4);
+          //
+          let COSum = 0;
+          dustdatas
+            .map((data) => data.CO)
+            .forEach((num) => {
+              COSum += num;
+            });
+          CO.innerText = (COSum / 25).toFixed(4);
+          //
+          let NO2Sum = 0;
+          dustdatas
+            .map((data) => data.NO2)
+            .forEach((num) => {
+              NO2Sum += num;
+            });
+          NO2.innerText = (NO2Sum / 25).toFixed(4);
+          //
 
-      const infoH1 = document.querySelector(".info h1");
-      const emoticon = document.querySelector(".emoticon");
-      const average = document.querySelector(".average");
-      const imgwrap = document.querySelector(".info_imgwrap");
+          // 등급에따른 색 및 사진 변화
 
-      const countGoodAndBad = (array) => {
-        let goodCount = 0;
-        let badCount = 0;
-        let realBadCount = 0;
-        for (let item of array) {
-          if (item === "좋음") {
-            goodCount++;
-          } else if (item === "나쁨") {
-            badCount++;
-          } else if (item === "매우나쁨") {
-            realBadCount++;
-          }
-        }
-        return { goodCount, badCount, realBadCount };
-      };
-      const displayResult = (array) => {
-        const { goodCount, badCount, realBadCount } = countGoodAndBad(array);
-        if (goodCount > badCount && goodCount > realBadCount) {
-          IDEX_NM.innerText = "좋음";
-          infoH1.innerText = "미세먼지 좋음";
-          emoticon.src = "./src/good.png";
-          average.style.color = "green";
-          imgwrap.style.background = "rgba(0, 190, 0, 0.8)";
-        } else if (badCount > goodCount && badCount > realBadCount) {
-          IDEX_NM.innerText = "나쁨";
-          infoH1.innerText = "미세먼지 나쁨";
-          emoticon.src = "./src/mask.png";
-          average.style.color = "#f00";
-        } else if (realBadCount > goodCount && realBadCount > badCount) {
-          IDEX_NM.innerText = "매우나쁨";
-          infoH1.innerText = "미세먼지 매우나쁨";
-          emoticon.src = "./src/mask.png";
-          average.style.color = "#f00";
-        } else {
-          console.log("보통");
-          IDEX_NM.innerText = "보통";
-          infoH1.innerText = "미세먼지 보통";
-          emoticon.src = "./src/good.png";
-          average.style.color = "black";
-        }
-      };
-      displayResult(dustdatas.map((data) => data.IDEX_NM));
-      //날짜 치환
-      const year = dustdatas[0].MSRDT.slice(0, 4);
-      const month = dustdatas[0].MSRDT.slice(4, 6);
-      const day = dustdatas[0].MSRDT.slice(6, 8);
-      const hour = dustdatas[0].MSRDT.slice(8, 10);
-      const minute = dustdatas[0].MSRDT.slice(10, 12);
-      const formattedDate = `${year}-${month}-${day} ${hour}:${minute}`;
-      MSRDT.innerText = formattedDate;
-      //
+          const infoH1 = document.querySelector(".info h1");
+          const emoticon = document.querySelector(".emoticon");
+          const average = document.querySelector(".average");
+          const imgwrap = document.querySelector(".info_imgwrap");
 
-      //지도 색 변경
-      citys.forEach((city) => {
-        dustdatas.forEach((dustdata) => {
-          if (city.innerText === dustdata.MSRSTE_NM) {
-            if (dustdata.IDEX_NM === "매우나쁨") {
-              city.style.backgroundColor = "rgba(255,0,0,1)";
-              city.style.color = "white";
-            } else if (dustdata.IDEX_NM === "나쁨") {
-              city.style.backgroundColor = "rgba(255,50,100,1)";
-              city.style.color = "white";
-            } else if (dustdata.IDEX_NM === "좋음") {
-              city.style.backgroundColor = "rgba(0, 190, 0, 0.8)";
-            } else if (dustdata.IDEX_NM === "") {
-              city.style.backgroundColor = "black";
-            } else if (dustdata.IDEX_NM === "보통") {
-              city.style.backgroundColor = "skyblue";
+          const countGoodAndBad = (array) => {
+            let goodCount = 0;
+            let badCount = 0;
+            let realBadCount = 0;
+            for (let item of array) {
+              if (item === "좋음") {
+                goodCount++;
+              } else if (item === "나쁨") {
+                badCount++;
+              } else if (item === "매우나쁨") {
+                realBadCount++;
+              }
             }
-          }
+            return { goodCount, badCount, realBadCount };
+          };
+          const displayResult = (array) => {
+            const { goodCount, badCount, realBadCount } =
+              countGoodAndBad(array);
+            if (goodCount > badCount && goodCount > realBadCount) {
+              IDEX_NM.innerText = "좋음";
+              infoH1.innerText = "미세먼지 좋음";
+              emoticon.src = "./src/good.png";
+              average.style.color = "green";
+              imgwrap.style.background = "rgba(0, 190, 0, 0.8)";
+            } else if (badCount > goodCount && badCount > realBadCount) {
+              IDEX_NM.innerText = "나쁨";
+              infoH1.innerText = "미세먼지 나쁨";
+              emoticon.src = "./src/mask.png";
+              average.style.color = "#f00";
+            } else if (realBadCount > goodCount && realBadCount > badCount) {
+              IDEX_NM.innerText = "매우나쁨";
+              infoH1.innerText = "미세먼지 매우나쁨";
+              emoticon.src = "./src/mask.png";
+              average.style.color = "#f00";
+            } else {
+              console.log("보통");
+              IDEX_NM.innerText = "보통";
+              infoH1.innerText = "미세먼지 보통";
+              emoticon.src = "./src/good.png";
+              average.style.color = "black";
+            }
+          };
+          displayResult(dustdatas.map((data) => data.IDEX_NM));
+          //날짜 치환
+          const year = dustdatas[0].MSRDT.slice(0, 4);
+          const month = dustdatas[0].MSRDT.slice(4, 6);
+          const day = dustdatas[0].MSRDT.slice(6, 8);
+          const hour = dustdatas[0].MSRDT.slice(8, 10);
+          const minute = dustdatas[0].MSRDT.slice(10, 12);
+          const formattedDate = `${year}-${month}-${day} ${hour}:${minute}`;
+          MSRDT.innerText = formattedDate;
+          //
+
+          //지도 색 변경
+          citys.forEach((city) => {
+            dustdatas.forEach((dustdata) => {
+              if (city.innerText === dustdata.MSRSTE_NM) {
+                if (dustdata.IDEX_NM === "매우나쁨") {
+                  city.style.backgroundColor = "rgba(255,0,0,1)";
+                  city.style.color = "white";
+                } else if (dustdata.IDEX_NM === "나쁨") {
+                  city.style.backgroundColor = "rgba(255,50,100,1)";
+                  city.style.color = "white";
+                } else if (dustdata.IDEX_NM === "좋음") {
+                  city.style.backgroundColor = "rgba(0, 190, 0, 0.8)";
+                } else if (dustdata.IDEX_NM === "") {
+                  city.style.backgroundColor = "black";
+                } else if (dustdata.IDEX_NM === "보통") {
+                  city.style.backgroundColor = "skyblue";
+                }
+              }
+            });
+          });
+          return dustdatas;
         });
-      });
-      return dustdatas;
-    });
+    }
+  }
 };
-getDust();
+xhr.send("");
+
+// const getDust = () => {
+//   // const url =
+//   //   "http://openAPI.seoul.go.kr:8088/6b57516b6e6a616531303061426d5571/json/RealtimeCityAir/1/100/";
+//   console.log(xhr);
+//   console.log(url);
+//   fetch(url)
+//     .then((response) => response.json())
+//     .then((data) => {
+//       dustdatas = data.RealtimeCityAir.row;
+//       console.log(dustdatas);
+//       //
+//       let PM10Sum = 0;
+//       dustdatas
+//         .map((data) => data.PM10)
+//         .forEach((num) => {
+//           PM10Sum += num;
+//         });
+//       PM10.innerText = (PM10Sum / 25).toFixed(2);
+//       //
+//       let PM25Sum = 0;
+//       dustdatas
+//         .map((data) => data.PM25)
+//         .forEach((num) => {
+//           PM25Sum += num;
+//         });
+//       PM25.innerText = (PM25Sum / 25).toFixed(2);
+//       //
+//       let O3Sum = 0;
+//       dustdatas
+//         .map((data) => data.O3)
+//         .forEach((num) => {
+//           O3Sum += num;
+//         });
+//       O3.innerText = (O3Sum / 25).toFixed(4);
+//       //
+//       let SO2Sum = 0;
+//       dustdatas
+//         .map((data) => data.SO2)
+//         .forEach((num) => {
+//           SO2Sum += num;
+//         });
+//       SO2.innerText = (SO2Sum / 25).toFixed(4);
+//       //
+//       let COSum = 0;
+//       dustdatas
+//         .map((data) => data.CO)
+//         .forEach((num) => {
+//           COSum += num;
+//         });
+//       CO.innerText = (COSum / 25).toFixed(4);
+//       //
+//       let NO2Sum = 0;
+//       dustdatas
+//         .map((data) => data.NO2)
+//         .forEach((num) => {
+//           NO2Sum += num;
+//         });
+//       NO2.innerText = (NO2Sum / 25).toFixed(4);
+//       //
+
+//       // 등급에따른 색 및 사진 변화
+
+//       const infoH1 = document.querySelector(".info h1");
+//       const emoticon = document.querySelector(".emoticon");
+//       const average = document.querySelector(".average");
+//       const imgwrap = document.querySelector(".info_imgwrap");
+
+//       const countGoodAndBad = (array) => {
+//         let goodCount = 0;
+//         let badCount = 0;
+//         let realBadCount = 0;
+//         for (let item of array) {
+//           if (item === "좋음") {
+//             goodCount++;
+//           } else if (item === "나쁨") {
+//             badCount++;
+//           } else if (item === "매우나쁨") {
+//             realBadCount++;
+//           }
+//         }
+//         return { goodCount, badCount, realBadCount };
+//       };
+//       const displayResult = (array) => {
+//         const { goodCount, badCount, realBadCount } = countGoodAndBad(array);
+//         if (goodCount > badCount && goodCount > realBadCount) {
+//           IDEX_NM.innerText = "좋음";
+//           infoH1.innerText = "미세먼지 좋음";
+//           emoticon.src = "./src/good.png";
+//           average.style.color = "green";
+//           imgwrap.style.background = "rgba(0, 190, 0, 0.8)";
+//         } else if (badCount > goodCount && badCount > realBadCount) {
+//           IDEX_NM.innerText = "나쁨";
+//           infoH1.innerText = "미세먼지 나쁨";
+//           emoticon.src = "./src/mask.png";
+//           average.style.color = "#f00";
+//         } else if (realBadCount > goodCount && realBadCount > badCount) {
+//           IDEX_NM.innerText = "매우나쁨";
+//           infoH1.innerText = "미세먼지 매우나쁨";
+//           emoticon.src = "./src/mask.png";
+//           average.style.color = "#f00";
+//         } else {
+//           console.log("보통");
+//           IDEX_NM.innerText = "보통";
+//           infoH1.innerText = "미세먼지 보통";
+//           emoticon.src = "./src/good.png";
+//           average.style.color = "black";
+//         }
+//       };
+//       displayResult(dustdatas.map((data) => data.IDEX_NM));
+//       //날짜 치환
+//       const year = dustdatas[0].MSRDT.slice(0, 4);
+//       const month = dustdatas[0].MSRDT.slice(4, 6);
+//       const day = dustdatas[0].MSRDT.slice(6, 8);
+//       const hour = dustdatas[0].MSRDT.slice(8, 10);
+//       const minute = dustdatas[0].MSRDT.slice(10, 12);
+//       const formattedDate = `${year}-${month}-${day} ${hour}:${minute}`;
+//       MSRDT.innerText = formattedDate;
+//       //
+
+//       //지도 색 변경
+//       citys.forEach((city) => {
+//         dustdatas.forEach((dustdata) => {
+//           if (city.innerText === dustdata.MSRSTE_NM) {
+//             if (dustdata.IDEX_NM === "매우나쁨") {
+//               city.style.backgroundColor = "rgba(255,0,0,1)";
+//               city.style.color = "white";
+//             } else if (dustdata.IDEX_NM === "나쁨") {
+//               city.style.backgroundColor = "rgba(255,50,100,1)";
+//               city.style.color = "white";
+//             } else if (dustdata.IDEX_NM === "좋음") {
+//               city.style.backgroundColor = "rgba(0, 190, 0, 0.8)";
+//             } else if (dustdata.IDEX_NM === "") {
+//               city.style.backgroundColor = "black";
+//             } else if (dustdata.IDEX_NM === "보통") {
+//               city.style.backgroundColor = "skyblue";
+//             }
+//           }
+//         });
+//       });
+//       return dustdatas;
+//     });
+// };
+// getDust();
 
 //모달창
 const citys = document.querySelectorAll(".city");

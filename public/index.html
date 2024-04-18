@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:image" content="./src/dust.png" />
     <meta property="og:title" content="Seoul Status of fine dust /JJLEEM " />
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content=" connect-src 'self' http://openAPI.seoul.go.kr:8088/6b57516b6e6a616531303061426d5571/json/RealtimeCityAir/1/100/"
+    /> -->
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    /> -->
+
     <link rel="icon" href="./src/favicon.ico" />
     <meta
       property="og:description"
       content="서울 권역별 대기현황을 실시간으로 확인하세요 /임재준"
     />
     <link rel="stylesheet" href="./style.css" />
+
     <script defer src="./script.js"></script>
     <title>서울 권역별 대기환경 현황</title>
   </head>
@@ -95,7 +105,7 @@
     <div class="modal">
       <div class="modalContent">
         <div class="modal_text">
-          <h1>구로구 대기환경 현황</h1>
+          <h1>대기환경 현황</h1>
           <div class="modalInfo">
             <span class="modInfo-text">
               <span class="modInfo title">미세먼지(㎍/㎥)</span>
